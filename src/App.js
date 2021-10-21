@@ -1,41 +1,48 @@
-import { useEffect, useState } from "react";
-import Form from "./components/Form";
-import List from "./components/List";
+import { useState } from "react";
+import { useEffect } from "react/cjs/react.development";
+import "./App.css";
 
 function App() {
-  const [laundryItems, setLaundryItems] = useState([
-    {
-      type: "pants",
-      status: "lightly dirty",
-      id: "4",
-    },
-    {
-      type: "pants",
-      status: "lightly dirty",
-      id: "3",
-    },
-    {
-      type: "pants",
-      status: "lightly dirty",
-      id: "2",
-    },
-    {
-      type: "pants",
-      status: "lightly dirty",
-      id: "1",
-    },
+  const [laundryArray, setLaundryArray] = useState([
+    { laundryItem: "khakis", date: "Today", id: 0 },
   ]);
-  const [shouldDoLaundry, setShouldDoLaundry] = useState(false);
+  const [laundryInput, setLaundryInput] = useState();
+  const [laundryDueDate, setLaundryDueDate] = useState();
 
   useEffect(() => {
-    console.log(laundryItems);
-    console.log(shouldDoLaundry);
-  }, []);
+    if (laundryInput) {
+      console.log(laundryInput);
+    }
+  }, [laundryInput]);
+
+  const handleChange = (e) => {
+    setLaundryInput(e.target.value);
+  };
+
+  const handleClick = (e) => {
+    console.log("clicked", e.target, laundryArray);
+
+    const newLaundryObj = {
+      date: new Date(),
+      laundryItem: laundryInput,
+      daysUntilDue: laundryDueDate,
+    };
+
+    setLaundryArray([...laundryArray, newLaundryObj]);
+  };
 
   return (
-    <div className="App">
-      <Form setLaundryItems={setLaundryItems} />
-      <List dirtyClothes={laundryItems} />
+    <div>
+      {/* // Laundry List */}
+      {laundryArray.map((item) => {
+        return <div>{item}</div>;
+      })}
+
+      {/* // Laundry Form */}
+      <div>
+        <input onChange={handleChange} type="text" />
+        <button onClick={handleClick}>Submit</button>
+      </div>
     </div>
   );
 }

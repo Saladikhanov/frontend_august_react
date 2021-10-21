@@ -216,3 +216,225 @@ function App() {
 
 export default App;
 ```
+
+class Car {
+constructor(color, size) {
+this.color = color
+this.size = size
+}
+}
+
+# Day 3: State
+
+## Intro
+
+State is the properties of the component whose value originate from within that component and those values can be changed by the component
+
+- It's like in classes the properties we looked at in the constructor method of class definitions
+
+## useState
+
+In functional components, we use useState to create and manage pieces of state. A piece of state is a property and corresponding function for changing the value of the property.
+
+Import useState at the top of your js file:
+
+`import { useState } from 'react'`
+
+Then inside your functional component at the top and for sure above its return statement, include the following to create the piece of state:
+
+`const [numberOfUsers, setNumberOfUsers] = useState();
+
+In the example, `numberOfUsers` is the property and `setNumberOfUsers` is the corresponding function for changing the value of `numberOfUsers`.
+
+To set an initial value, put it in the useState() method as an argument.
+
+`const [numberOfUsers, setNumberOfUsers] = useState(20);
+
+## Rerendering
+
+Although a component can change the value of a piece of its state and fully control the state, the only way to change the state to cause the component to rerender is by using the state property's corresponding function. Here, using `setNumberOfUsers` is the only wayt to change `numberOfUsers` to cause the component to rerender.
+
+Remember, in hooks, the setStateFunction is the second item in the array (index 1) returned from the useState react method.
+
+This does not cause a rerender:
+
+`numberOfUsers = 21`
+
+This causes a rerender:
+
+`setNumberOfUsers(21)`
+
+When a component rerenders, the page shows the updated value for the piece of state.
+
+## useEffect
+
+Also, when a component rerenders, the useEffect lifecycle function will run if the state is listed in the useEffect's dependency array.
+
+```
+useEffect(()=>{
+  console.log(numberOfUsers)
+}, [numberOfUsers])
+```
+
+To have the useEffect run when a piece of state changes but only if the piece has an actual value, you can use a conditional in the useEffect.
+
+```
+useEffect(()=>{
+  if (numberOfUsers) {
+    console.log(numberOfUsers)
+  }
+}, [numberOfUsers])
+```
+
+## Set Function is Async
+
+Talked about it together
+So if you want to see the outcome of the set state function, use a separate useEffect with the piece of state in the useEffect's dependency array
+
+## Don't!
+
+Don't use a piece of states function to set state inside a useEffect that lists the state in its dependency array
+
+```
+const [arrayOfUsers, setArrayOfUsers] = useState();
+
+useEffect(()=>{
+    const newItem = {
+      date: new Date(),
+      message: "Have a great day."
+    }
+
+   setArrayOfUsers((prevState)=>{
+     [newItem, ...prevState]
+   })
+},[arrayOfUsers])
+```
+
+It will lead to an infinite loop. Do you know why?
+
+## State in the return
+
+You can use state in your return statement in many ways. Here are four million examples:
+
+- To display the piece of state on the page:
+
+```
+return (
+  <div>
+    The number of users is: {numberOfUsers}
+  </div>
+)
+```
+
+- To hide and show elements:
+
+```
+return (
+  <div>
+    {numberOfUsers && `The number of users is ${numberOfUsers}` }
+    {!numberOfUsers && "You have no users"}
+  </div>
+)
+```
+
+Without ternary operator:
+
+```
+return (
+  <div>
+    {numberOfUsers && <div>`The number of users is ${numberOfUsers}`</div> }
+    {!numberOfUsers && <div>"You have no users"</div>}
+  </div>
+)
+```
+
+With ternary operator:
+
+```
+return (
+  <div>
+    {numberOfUsers ?
+      <div>`The number of users is ${numberOfUsers}`</div> :
+      <div>"You have no users"</div>
+      }
+  </div>
+)
+
+- To control which CSS style class applies:
+
+
+Without ternary operator
+
+```
+
+// in addition to number of users, you have a boolean piece of state
+const [showNumber, setShowNumber] = useState(false)
+
+// and two classes in your css file
+// .num-users-true { // css styles with green colors}
+// .num-users-false { // css styles with red colors}
+
+return (
+
+  <div>
+    <div className={num-users-${showNumber}}>`The number of users is ${numberOfUsers}`</div>
+  </div>
+)
+```
+
+With ternary operator
+
+```
+// in addition to number of users, you have a boolean piece of state
+const [showNumber, setShowNumber] = useState(false)
+
+// and two classes in your css file
+// .num-users-show { // css styles with green colors}
+// .num-users-hidden { // css styles with red colors}
+
+return (
+  <div>
+    <div className={num-users-${showNumber ? "hidden" : "show" }}>`The number of users is ${numberOfUsers}`</div>
+  </div>
+)
+```
+
+- In ternary operators:
+
+```
+return (
+  <div>
+    The number of users is: {numberOfUsers ? numberOfUsers : "No users"}
+  </div>
+)
+```
+
+- And more!
+
+## Update previous state
+
+Update previous state (usually for an array, maybe an object)
+
+```
+const [arrayOfUsers, setArrayOfUsers] = useState();
+
+useEffect(()=>{
+    const newItem = {
+      date: new Date(),
+      message: "Have a great day."
+    }
+
+   setArrayOfUsers((prevState)=>{
+     [newItem, ...prevState]
+   })
+},[numberOfUsers])
+```
+
+## State as Props
+
+You can pass state as props to child components  
+You can pass the property as a prop, which is read-only from inside the child component  
+You can also pass the corresponding set state function as a prop and use the setState function inside the child componet to change the value of the parent's state  
+Changing the state causes a rerender for any component that uses that state as props
+
+More on this in the next class.
