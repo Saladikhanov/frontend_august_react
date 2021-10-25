@@ -1,36 +1,53 @@
 import { useState } from "react";
-import { useEffect } from "react/cjs/react.development";
+import "../App.css";
 
-const Form = (props) => {
-  const { setLaundryItems } = props;
-  const [statusInput, setStatusInput] = useState();
+function Form(props) {
+  const {
+    laundryInput,
+    setLaundryInput,
+    setLaundryArray,
+    dateInput,
+    setDateInput,
+  } = props;
 
-  const handleStatusInput = (e) => {
-    const newLaundryObj = {
-      type: "pants",
-      status: e.target.value,
-    };
-    // console.log(newLaundryObj);
-    setStatusInput(newLaundryObj);
+  const handleChangeLaundry = (e) => {
+    // Don't change state like the next line . . .
+    // laundryInput = "new value"
+
+    // Change state like this!
+    setLaundryInput(e.target.value);
+  };
+
+  const handleChangeDate = (e) => {
+    setDateInput(e.target.value);
   };
 
   const handleSubmit = () => {
-    console.log(statusInput);
-    setLaundryItems((prevState) => {
-      return [...prevState, statusInput];
+    const formData = {
+      laundryInput: laundryInput,
+      dateInput: dateInput,
+    };
+    setLaundryArray((prevState) => {
+      return [formData, ...prevState];
     });
   };
 
-  //   useEffect(() => {
-  //     console.log(statusInput);
-  //   }, [statusInput]);
-
   return (
-    <>
-      <input type="text" placeholder="status" onChange={handleStatusInput} />
+    <div>
+      {/* Form */}
+      <input
+        onChange={handleChangeLaundry}
+        type="text"
+        placeholder="Do you have laundry?"
+      />
+      <input
+        onChange={handleChangeDate}
+        type="date"
+        placeholder="When do you need it clean?"
+      />
       <button onClick={handleSubmit}>Submit</button>
-    </>
+    </div>
   );
-};
+}
 
 export default Form;

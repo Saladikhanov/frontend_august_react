@@ -1,19 +1,20 @@
-import { useEffect } from "react/cjs/react.development";
+import "../App.css";
 
-const List = (props) => {
-  const { dirtyClothes } = props;
-
-  useEffect(() => {
-    console.log(dirtyClothes);
-  }, []);
-
+function List(props) {
+  const { laundryArray } = props;
   return (
     <div>
-      {dirtyClothes.map((item) => {
-        return <div key={item.id}>{item.status}</div>;
+      {/* List */}
+      {laundryArray.map((item, index) => {
+        return (
+          <div key={item.dateInput + index}>
+            {<div>{item.laundryInput}</div>}
+            {item.dateInput && <div>{item.dateInput}</div>}
+          </div>
+        );
       })}
     </div>
   );
-};
+}
 
 export default List;
