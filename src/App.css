@@ -7,3 +7,14 @@
   color: red;
   font-size: 30px;
 }
+
+.submit-button-false {
+  background-color: blue;
+  color: white;
+}
+
+.submit-button-true {
+  background-color: red;
+  color: white;
+  opacity: 0.6;
+}
