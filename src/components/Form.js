@@ -1,9 +1,11 @@
-import { useState } from "react";
-import { useEffect } from "react/cjs/react.development";
+import { useContext, useEffect, useState } from "react";
 import "../App.css";
 import { v4 as uuidv4 } from "uuid";
+import Loader from "./Loader";
+import AppContext from "../context/AppContext";
 
 function Form(props) {
+  const appContext = useContext(AppContext);
   const {
     laundryInput,
     setLaundryInput,
@@ -18,8 +20,15 @@ function Form(props) {
     formData,
     setFormData,
     isFormComplete,
-    parent,
+    showAlert,
+    setShowAlert,
+    setCatData,
   } = props;
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    console.log(appContext.laundryArray);
+  }, [appContext.laundryArray]);
 
   const handleChangeLaundry = (e) => {
     // Don't change state like the next line . . .
@@ -47,30 +56,79 @@ function Form(props) {
   // }, [laundryArray]);
 
   const handleSubmit = () => {
-    const finalData = formData;
-    finalData["createdDate"] = new Date();
+    // START LOADER --> Loading . . .
+    // HIDE BUTTON
+    setIsLoading(true);
+    const catURL = "https://api.thecatapi.com/v1/images/search";
 
-    if (parent === "App") {
-      finalData["id"] = uuidv4();
-    }
+    fetch(catURL)
+      .then((response) => response.json())
+      .then((data) => {
+        setCatData(data);
+        const finalData = formData;
+        finalData["createdDate"] = new Date();
+        finalData["id"] = uuidv4();
+        finalData["cat_photo"] = data[0]["url"];
 
-    if (parent === "List") {
-      finalData["id"] = formData["id"];
-    }
+        setLaundryArray((prevState) => {
+          return [finalData, ...prevState];
+        });
 
-    setLaundryArray((prevState) => {
-      return [finalData, ...prevState];
-    });
-    setLaundryInput("");
-    setDateInput("");
-    setCustomerInput("");
-    setWorkerInput("");
-    setFormData({});
+        // STOP LOADER
+        // SHOW BUTTON
+        setIsLoading(false);
+        const workerName = formData["workerInput"];
+        // CLEAR FORM
+        setLaundryInput("");
+        setDateInput("");
+        setCustomerInput("");
+        setWorkerInput("");
+        setFormData({});
+
+        // SHOW ALERT
+        if (workerName === "Jon") {
+          // Show error
+          setShowAlert("error");
+        } else {
+          // Success
+          setShowAlert("success");
+        }
+
+        setTimeout(() => {
+          setShowAlert("false");
+        }, [2000]);
+
+        // setTimeout(() => {
+        //   // STOP LOADER
+        //   // SHOW BUTTON
+        //   setIsLoading(false);
+        //   const workerName = formData["workerInput"];
+        //   // CLEAR FORM
+        //   setLaundryInput("");
+        //   setDateInput("");
+        //   setCustomerInput("");
+        //   setWorkerInput("");
+        //   setFormData({});
+
+        //   // SHOW ALERT
+        //   if (workerName === "Jon") {
+        //     // Show error
+        //     setShowAlert("error");
+        //   } else {
+        //     // Success
+        //     setShowAlert("success");
+        //   }
+
+        //   setTimeout(() => {
+        //     setShowAlert("false");
+        //   }, [2000]);
+        // }, [2000]);
+      });
   };
 
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
+  // useEffect(() => {
+  //   console.log(formData);
+  // }, [formData]);
 
   return (
     <div>
@@ -106,8 +164,8 @@ function Form(props) {
         formData["workerInput"] && (
           <button onClick={handleSubmit}>Submit</button>
         )} */}
-
-      {
+      {isLoading && <Loader />}
+      {!isLoading && (
         <button
           disabled={!isFormComplete}
           className={`submit-button-${!isFormComplete}`}
@@ -115,7 +173,7 @@ function Form(props) {
         >
           Submit
         </button>
-      }
+      )}
     </div>
   );
 }
