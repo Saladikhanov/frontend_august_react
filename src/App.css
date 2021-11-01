@@ -5,6 +5,10 @@
   width: 100vw;
 }
 
+.cat-image {
+  width: 200px;
+}
+
 .num-users-true {
   color: green;
   font-size: 40px;

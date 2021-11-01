@@ -1,9 +1,5 @@
 import React from "react";
 
-const AppContext = React.createContext({
-  laundryArray: "",
-  setLaundryArray: "",
-  isEditing: "",
-});
+const AppContext = React.createContext({});
 
 export default AppContext;

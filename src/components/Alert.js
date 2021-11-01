@@ -1,4 +1,3 @@
-import { useState } from "react/cjs/react.development";
 import "../App.css";
 
 function Alert(props) {

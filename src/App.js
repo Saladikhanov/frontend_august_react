@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import "./App.css";
+import { useState } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import Home from "./components/Home";
 import List from "./components/List";
 import Form from "./components/Form";
-import Alert from "./components/Alert";
 import AppContext from "./context/AppContext";
-
-import "./App.css";
+import Navbar from "./components/Navbar";
 
 function App() {
   const [laundryInput, setLaundryInput] = useState();
@@ -16,81 +17,42 @@ function App() {
   const [isFormComplete, setIsFormComplete] = useState(false);
   const [showAlert, setShowAlert] = useState("false");
   const [catData, setCatData] = useState();
-
-  useEffect(() => {
-    if (catData) {
-      console.log(catData);
-    }
-  }, [catData]);
-
-  useEffect(() => {
-    if (
-      formData &&
-      formData["laundryInput"] &&
-      formData["dateInput"] &&
-      formData["customerInput"] &&
-      formData["workerInput"]
-    ) {
-      setIsFormComplete(true);
-    } else {
-      setIsFormComplete(false);
-    }
-  }, [formData]);
-
-  useEffect(() => {
-    const newFormData = {
-      laundryInput: laundryInput,
-      dateInput: dateInput,
-      customerInput: customerInput,
-      workerInput: workerInput,
-      // createdDate: new Date(),
-      // id: uuidv4(),
-    };
-
-    setFormData(newFormData);
-  }, [laundryInput, dateInput, customerInput, workerInput]);
-
-  // useEffect(() => {
-  //   if (formData) {
-  //     console.log(formData);
-  //   }
-  // }, [formData]);
-
-  useEffect(() => {
-    if (laundryArray) {
-      console.log(laundryArray);
-    }
-  }, [laundryArray]);
+  const [randomString, setRandomString] = useState("random string");
 
   return (
-    <AppContext.Provider
-      value={{
-        laundryArray: laundryArray,
-        setLaundryArray: setLaundryArray,
-        catData: catData,
-      }}
-    >
-      <div className="app-wrapper">
-        {showAlert !== "false" && <Alert showAlert={showAlert} />}
-        <Form
-          laundryInput={laundryInput}
-          setLaundryInput={setLaundryInput}
-          setLaundryArray={setLaundryArray}
-          dateInput={dateInput}
-          setDateInput={setDateInput}
-          customerInput={customerInput}
-          setCustomerInput={setCustomerInput}
-          workerInput={workerInput}
-          setWorkerInput={setWorkerInput}
-          formData={formData}
-          setFormData={setFormData}
-          isFormComplete={isFormComplete}
-          showAlert={showAlert}
-          setShowAlert={setShowAlert}
-          setCatData={setCatData}
-        />
-      </div>
-    </AppContext.Provider>
+    <div>
+      <AppContext.Provider
+        value={{
+          laundryArray: laundryArray,
+          setLaundryArray: setLaundryArray,
+          catData: catData,
+          randomString: randomString,
+          laundryInput: laundryInput,
+          setLaundryInput: setLaundryInput,
+          dateInput: dateInput,
+          setDateInput: setDateInput,
+          customerInput: customerInput,
+          setCustomerInput: setCustomerInput,
+          workerInput: workerInput,
+          setWorkerInput: setWorkerInput,
+          formData: formData,
+          setFormData: setFormData,
+          isFormComplete: isFormComplete,
+          setIsFormComplete: setIsFormComplete,
+          showAlert: showAlert,
+          setShowAlert: setShowAlert,
+          setCatData: setCatData,
+        }}
+      >
+        <Router>
+          <Navbar />
+
+          <Route path="/" component={Home} />
+          <Route exact path="/list" component={List} />
+          <Route path="/form" component={Form} />
+        </Router>
+      </AppContext.Provider>
+    </div>
   );
 }
 

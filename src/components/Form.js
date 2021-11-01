@@ -1,30 +1,14 @@
 import { useContext, useEffect, useState } from "react";
+import { Redirect } from "react-router-dom";
 import "../App.css";
 import { v4 as uuidv4 } from "uuid";
 import Loader from "./Loader";
 import AppContext from "../context/AppContext";
 
-function Form(props) {
+function Form() {
   const appContext = useContext(AppContext);
-  const {
-    laundryInput,
-    setLaundryInput,
-    laundryArray,
-    setLaundryArray,
-    dateInput,
-    setDateInput,
-    customerInput,
-    setCustomerInput,
-    workerInput,
-    setWorkerInput,
-    formData,
-    setFormData,
-    isFormComplete,
-    showAlert,
-    setShowAlert,
-    setCatData,
-  } = props;
   const [isLoading, setIsLoading] = useState(false);
+  const [redirect, setRedirect] = useState();
 
   useEffect(() => {
     console.log(appContext.laundryArray);
@@ -35,19 +19,19 @@ function Form(props) {
     // laundryInput = "new value"
 
     // Change state like this!
-    setLaundryInput(e.target.value);
+    appContext.setLaundryInput(e.target.value);
   };
 
   const handleChangeDate = (e) => {
-    setDateInput(e.target.value);
+    appContext.setDateInput(e.target.value);
   };
 
   const handleChangeCustomer = (e) => {
-    setCustomerInput(e.target.value);
+    appContext.setCustomerInput(e.target.value);
   };
 
   const handleChangeWorker = (e) => {
-    setWorkerInput(e.target.value);
+    appContext.setWorkerInput(e.target.value);
   };
 
   // useEffect(() => {
@@ -64,38 +48,39 @@ function Form(props) {
     fetch(catURL)
       .then((response) => response.json())
       .then((data) => {
-        setCatData(data);
-        const finalData = formData;
+        appContext.setCatData(data);
+        const finalData = appContext.formData;
         finalData["createdDate"] = new Date();
         finalData["id"] = uuidv4();
         finalData["cat_photo"] = data[0]["url"];
 
-        setLaundryArray((prevState) => {
+        appContext.setLaundryArray((prevState) => {
           return [finalData, ...prevState];
         });
 
         // STOP LOADER
         // SHOW BUTTON
         setIsLoading(false);
-        const workerName = formData["workerInput"];
+        const workerName = appContext.formData["workerInput"];
         // CLEAR FORM
-        setLaundryInput("");
-        setDateInput("");
-        setCustomerInput("");
-        setWorkerInput("");
-        setFormData({});
+        appContext.setLaundryInput("");
+        appContext.setDateInput("");
+        appContext.setCustomerInput("");
+        appContext.setWorkerInput("");
+        appContext.setFormData({});
 
         // SHOW ALERT
         if (workerName === "Jon") {
           // Show error
-          setShowAlert("error");
+          appContext.setShowAlert("error");
         } else {
           // Success
-          setShowAlert("success");
+          appContext.setShowAlert("success");
         }
 
         setTimeout(() => {
-          setShowAlert("false");
+          appContext.setShowAlert("false");
+          setRedirect("/");
         }, [2000]);
 
         // setTimeout(() => {
@@ -133,29 +118,30 @@ function Form(props) {
   return (
     <div>
       {/* Form */}
+      {redirect && <Redirect to={redirect} />}
       <input
         onChange={handleChangeLaundry}
         type="text"
         placeholder="Do you have laundry?"
-        value={laundryInput}
+        value={appContext.laundryInput}
       />
       <input
         onChange={handleChangeDate}
         type="date"
         placeholder="When do you need it clean?"
-        value={dateInput}
+        value={appContext.dateInput}
       />
       <input
         onChange={handleChangeCustomer}
         type="text"
         placeholder="When do you need it clean?"
-        value={customerInput}
+        value={appContext.customerInput}
       />
       <input
         onChange={handleChangeWorker}
         type="text"
         placeholder="When do you need it clean?"
-        value={workerInput}
+        value={appContext.workerInput}
       />
       {/* {formData &&
         formData["laundryInput"] &&
@@ -167,8 +153,8 @@ function Form(props) {
       {isLoading && <Loader />}
       {!isLoading && (
         <button
-          disabled={!isFormComplete}
-          className={`submit-button-${!isFormComplete}`}
+          disabled={!appContext.isFormComplete}
+          className={`submit-button-${!appContext.isFormComplete}`}
           onClick={handleSubmit}
         >
           Submit
