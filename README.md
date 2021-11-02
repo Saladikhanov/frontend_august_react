@@ -598,32 +598,15 @@ To each input, set it's value equal to the corresponding piece of state
    Add a Link on the success page that sends you back to Home
    Talk about the Link component
 
-6. Add a third Route to the router
+6. Add a button to the List page that takes you to the Home page
 
-   Connect it to a new component
-   The component should have in its path a variable
-   Refactor your code so that when you click on a message,
-   it takes you to that page
-   Have the page redirect you to the Home page after 3 seconds
-
-7. In this third component, use useLocation
-
-   Create a useEffect that console logs the path any time the location changes
-   Maybe need to do the following in this third component
-   Create a piece of state that stores an array of object (just hard code them for now)
-   Display the objects on the page
-   When a user clicks the object, use the Link to change the location
-   Console log the location each time the route changes
+7. Add a button to the success page that takes you to the Form page
 
 8. Use the List component for the success page
 
    The List component needs to be able to standalone
    Be able to call it next to the Form within the Home component
    Be able to call it by itself on its own page
-
-9. Add a button to the List page that takes you to the Home page
-
-10. Add a button to the success page that takes you to the Form page
 
 The Form page should be able to stand alone
 Be able to call it next to the List
@@ -639,20 +622,36 @@ Be able to call it by itself on the form page
    Update the clear form part of your component
    Update the photo code (from a fetch request) to have no state for it
 
-2. Add a user
+2. Add a dynamic Route to the router
+
+   Connect it to a new component
+   The component should have in its path a variable
+   Refactor your code so that when you click on a message,
+   it takes you to that page
+   Have the page redirect you to the Home page after 3 seconds
+
+3. In this component, use useLocation
+
+   Create a useEffect that console logs the path any time the location changes
+   Create a piece of state that stores an array of objects (just hard code them for now)
+   Display the objects on the page
+   When a user clicks the object, use the Link to change the location
+   Console log the location each time the route changes
+
+4. Add a user
 
    Hardcode a user object
    Create a piece of state in App js for storing current user
    Store the user on page load (like you'd do with a fetch request)
    Pass the user into the global context
 
-3. Make Login Page
+5. Make Login Page
 
    Add Route for Login
    Add component for Login
    When a user completes the form, set the global user with their info
 
-4. Add a PrivateRoute
+6. Add a PrivateRoute
 
    Create a new file named PrivateRoute
    Copy code from the internet and paste it in your new PrivateRoute file
@@ -660,14 +659,16 @@ Be able to call it by itself on the form page
    Apply your PrivateRoute to all your pages except Login
    Test that the PrivateRoute is working
 
-5. User Profile page
+7. User Profile page
 
    Add a Route for viewing a user's profile page
    On the Home page, if the user is logged in, show a link to their profile page
    When a user clicks that link, it should direct them to their own profile page that shows their user information
    How can you get the user information on that page
 
-6. Make Signup Page
+## JG React Day 9
+
+1. Make Signup Page
 
    Add Route for Signup
    Add component for Signup
@@ -676,11 +677,10 @@ Be able to call it by itself on the form page
    Store users as a appUsers object, with each user email as a key, and the value a user object
    Include a unique id with the user object
 
-7. Refactor Login form to retrieve user info from localstorage
-
+2. Refactor Login form to retrieve user info from localstorage
    Use the user's login email to find the key in the local storage appUsers object
 
-8. View list of users
+3. View list of users
 
    Create a Route for viewing a list of all users
    Create a component for that route
@@ -688,7 +688,7 @@ Be able to call it by itself on the form page
    In that component, when it loads, get all users from local storage
    Show a list of all the users on that page where each user is clickable (or has a view button)
 
-9. View other user
+4. View other user
    Create a Route for viewing other user profiles
    Create a component for that route
    When you click on a user, it should show you that user's information
@@ -697,11 +697,9 @@ Be able to call it by itself on the form page
    -- Create a piece of state to store that user's info (can be local, not global)
    -- Display the user's info on the page
 
-10. If time, implement "Admin only" features
+5. If time, implement "Admin only" features
 
-## JG React Day 9
-
-1. Setup Firebase project in Google console
+6. Setup Firebase project in Google console
 
 https://firebase.google.com/docs/web/setup
 
@@ -709,10 +707,10 @@ Create the project
 Declared it as a <> web project
 Choose Authentication tool
 
-2. Firebase credentials
+7. Firebase credentials
 
 In src/lib folder, put your firebaseConfig file and initialize app
 
-3. NPM install firebase
+8. NPM install firebase
 
-4. Import firebase credentials into the file you want to use it in (try App.js)
+9. Import firebase credentials into the file you want to use it in (try App.js)

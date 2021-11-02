@@ -66,6 +66,7 @@ function Home() {
 
   return (
     <div className="app-wrapper">
+      Home
       {appContext.showAlert !== "false" && (
         <Alert showAlert={appContext.showAlert} />
       )}

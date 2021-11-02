@@ -115,33 +115,51 @@ function Form() {
   //   console.log(formData);
   // }, [formData]);
 
+  const handleChangeInput = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    appContext.setFormData({ ...appContext.formData, [name]: value });
+  };
+
+  // // Another solution with similar code but same result
+  // const handleChangeInput = (e) => {
+  //   const name = e.target.name;
+  //   const value = e.target.value;
+  //   appContext.setFormData((prevState) => {
+  //     return { ...prevState, ...{ [name]: value } };
+  //   });
+  // };
+
   return (
     <div>
-      {/* Form */}
+      Form
       {redirect && <Redirect to={redirect} />}
       <input
-        onChange={handleChangeLaundry}
+        onChange={handleChangeInput}
         type="text"
         placeholder="Do you have laundry?"
-        value={appContext.laundryInput}
+        value={appContext.formData["laundryInput"]}
+        name="laundryInput"
       />
       <input
-        onChange={handleChangeDate}
+        onChange={handleChangeInput}
         type="date"
-        placeholder="When do you need it clean?"
-        value={appContext.dateInput}
+        value={appContext.formData["dateInput"]}
+        name="dateInput"
       />
       <input
-        onChange={handleChangeCustomer}
+        onChange={handleChangeInput}
         type="text"
-        placeholder="When do you need it clean?"
-        value={appContext.customerInput}
+        placeholder="Customer"
+        value={appContext.formData["customerInput"]}
+        name="customerInput"
       />
       <input
-        onChange={handleChangeWorker}
+        onChange={handleChangeInput}
         type="text"
-        placeholder="When do you need it clean?"
-        value={appContext.workerInput}
+        placeholder="Worker"
+        value={appContext.formData["workerInput"]}
+        name="workerInput"
       />
       {/* {formData &&
         formData["laundryInput"] &&

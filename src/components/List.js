@@ -31,7 +31,7 @@ function List() {
 
   return (
     <div>
-      {/* List */}
+      List
       {appContext.catData && (
         <img src={appContext.catData[0]["url"]} className={"cat-image"} />
       )}
