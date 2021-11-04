@@ -17,25 +17,33 @@ function Login() {
   }, [formData]);
 
   const handleLogin = () => {
-    formData["id"] = uuidv4();
-    console.log(formData);
-    appContext.setUser(formData);
+    // formData["id"] = uuidv4();
+    // console.log(formData);
+    const usersDB = JSON.parse(localStorage.getItem("usersDB"));
+    if (usersDB[formData.email]) {
+      appContext.setUser(usersDB[formData.email]);
+    } else {
+      console.log("not there");
+    }
+
+    console.log(usersDB[formData.email]);
   };
+
   return (
     <div>
       <input
         type="text"
-        placeholder="first name"
+        placeholder="email"
         onChange={handleChangeInput}
-        value={formData["first"]}
-        name="first"
+        value={formData["email"]}
+        name="email"
       />
       <input
         type="text"
-        placeholder="last name"
+        placeholder="password"
         onChange={handleChangeInput}
-        value={formData["last"]}
-        name="last"
+        value={formData["password"]}
+        name="password"
       />
       <button onClick={handleLogin}>Login</button>
     </div>

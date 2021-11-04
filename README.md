@@ -668,13 +668,27 @@ Be able to call it by itself on the form page
 
 ## JG React Day 9
 
+const usersObj = {
+jon@jon.com : {
+email:
+password:
+created_date:
+}
+don@don.com : {
+email:
+password:
+created_date:
+}
+
+}
+
 1. Make Signup Page
 
    Add Route for Signup
    Add component for Signup
    Add to local storage an array for storing users
    When a user completes the form, add their user info to the local storage
-   Store users as a appUsers object, with each user email as a key, and the value a user object
+   Store users as an appUsers object, with each user email as a key, and the value a user object
    Include a unique id with the user object
 
 2. Refactor Login form to retrieve user info from localstorage
@@ -704,13 +718,73 @@ Be able to call it by itself on the form page
 https://firebase.google.com/docs/web/setup
 
 Create the project
-Declared it as a <> web project
+Declare it as a <> web project
 Choose Authentication tool
 
 7. Firebase credentials
 
 In src/lib folder, put your firebaseConfig file and initialize app
 
+```
+import firebase from "firebase";
+
+// Your web app's Firebase configuration
+var firebaseConfig = {
+  apiKey: process.env.REACT_APP_APIKEY,
+  authDomain: process.env.REACT_APP_AUTHDOMAIN,
+  projectId: process.env.REACT_APP_PROJECTID,
+  storageBucket: process.env.REACT_APP_STORAGEBUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGINGSENDERID,
+  appId: process.env.REACT_APP_APPID,
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+export { firebase as default };
+```
+
 8. NPM install firebase
 
 9. Import firebase credentials into the file you want to use it in (try App.js)
+
+`import firebase from "../lib/firebase";`
+
+Login
+
+```
+firebase.signInWithEmailAndPassword(formData.email, formData.password)
+        .then((userCredential) => {
+          var user = userCredential.user;
+          console.log(user);
+          appContext.setUser({
+            email: user.email,
+            _id: user.uid,
+          });
+          setRedirect(true);
+        })
+        .catch((error) => {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+        });
+```
+
+Signup
+
+```
+firebase
+        .auth()
+        .createUserWithEmailAndPassword(formData.email, formData.password)
+        .then((userCredential) => {
+          // Signed in
+          var user = userCredential.user;
+          console.log(user);
+          writeUserData(user.uid, user.email);
+          setRedirect(true);
+          // ...
+        })
+        .catch((error) => {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          // ..
+        });
+```

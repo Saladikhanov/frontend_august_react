@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./components/Home";
 import Login from "./components/Login";
+import Signup from "./components/Signup";
 import List from "./components/List";
 import Form from "./components/Form";
 import Users from "./components/Users";
@@ -82,6 +83,7 @@ function App() {
         <Router>
           <Navbar />
           <Route exact path="/login" component={Login} />
+          <Route exact path="/signup" component={Signup} />
           <PrivateRoute exact path="/users" component={Users} />
           <PrivateRoute exact path="/user/:id" component={Profile} />
           <PrivateRoute exact path="/list" component={List} />
