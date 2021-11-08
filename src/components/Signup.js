@@ -3,6 +3,8 @@ import { useContext, useState } from "react";
 import AppContext from "../context/AppContext";
 import { handleChangeInput } from "../lib/functions";
 import { useEffect } from "react/cjs/react.development";
+import firebase from "../lib/firebase";
+// import firebase from "@firebase/app-compat";
 
 function Signup() {
   const appContext = useContext(AppContext);
@@ -15,20 +17,44 @@ function Signup() {
   };
 
   const handleSubmit = () => {
-    const usersDB = JSON.parse(localStorage.getItem("users"));
-    const keys = Object.keys(usersDB);
-    if (keys.includes(formData.email)) {
-      console.log("user already exists");
-    } else {
-      const submitObj = {
-        email: formData.email,
-        password: formData.password,
-        created_date: Date.now(),
-        id: 1,
-      };
-      usersDB[formData.email] = submitObj;
-      localStorage.setItem("users", JSON.stringify(usersDB));
-    }
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(formData.email, formData.password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        const userObj = {
+          email: user.email,
+          authId: user.uid,
+          created_date: Date.now(),
+          updated_date: Date.now(),
+        };
+
+        firebase
+          .database()
+          .ref("users/" + user.uid)
+          .set(userObj);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+        // ..
+      });
+    // const usersDB = JSON.parse(localStorage.getItem("users"));
+    // const keys = Object.keys(usersDB);
+    // if (keys.includes(formData.email)) {
+    //   console.log("user already exists");
+    // } else {
+    //   const submitObj = {
+    //     email: formData.email,
+    //     password: formData.password,
+    //     created_date: Date.now(),
+    //     id: 1,
+    //   };
+    //   usersDB[formData.email] = submitObj;
+    //   localStorage.setItem("users", JSON.stringify(usersDB));
+    // }
   };
 
   useEffect(() => {

@@ -45,13 +45,13 @@ function App() {
   //   // });
   // }, []);
 
-  // useEffect(() => {
-  //   // After user logs in, get user object from successful login
-  //   console.log(user);
-  //   if (user) {
-  //     // do some user stuff
-  //   }
-  // }, [user]);
+  useEffect(() => {
+    // After user logs in, get user object from successful login
+    if (user) {
+      // do some user stuff
+      console.log(user);
+    }
+  }, [user]);
 
   return (
     <div>
