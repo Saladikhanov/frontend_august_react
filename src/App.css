@@ -30,6 +30,34 @@
   opacity: 0.6;
 }
 
+.current-user {
+  margin: 20px;
+}
+
+.navbar {
+  /* position: relative; */
+  display: flex;
+  width: 100%;
+}
+
+.left-nav-wrapper {
+  display: flex;
+}
+
+.right-nav-wrapper {
+  display: flex;
+  justify-content: end;
+  flex-grow: 2;
+}
+
+.nav-item {
+  text-decoration: none;
+}
+
+.other-users {
+  margin: 50px 20px;
+}
+
 .loader1 {
   display: inline-block;
   font-size: 0px;

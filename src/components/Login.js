@@ -4,6 +4,7 @@ import "../App.css";
 import { v4 as uuidv4 } from "uuid";
 import AppContext from "../context/AppContext";
 import firebase from "../lib/firebase";
+import { getUserById } from "../lib/firebaseFunctions";
 
 function Login() {
   const appContext = useContext(AppContext);
@@ -27,11 +28,8 @@ function Login() {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        const dbRef = firebase.database().ref();
-        dbRef
-          .child("users")
-          .child(user.uid)
-          .get()
+        const userById = getUserById(user.uid);
+        userById
           .then((snapshot) => {
             if (snapshot.exists()) {
               appContext.setUser(snapshot.val());
@@ -43,7 +41,23 @@ function Login() {
           .catch((error) => {
             console.error(error);
           });
-        // ...
+        // const dbRef = firebase.database().ref();
+        // dbRef
+        //   .child("users")
+        //   .child(user.uid)
+        //   .get()
+        //   .then((snapshot) => {
+        //     if (snapshot.exists()) {
+        //       appContext.setUser(snapshot.val());
+        //       setRedirect("/");
+        //     } else {
+        //       console.log("No data available");
+        //     }
+        //   })
+        //   .catch((error) => {
+        //     console.error(error);
+        //   });
+        // // ...
       })
       .catch((error) => {
         var errorCode = error.code;

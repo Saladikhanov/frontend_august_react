@@ -13,6 +13,20 @@ function Home() {
   const [allUsers, setAllUsers] = useState();
 
   useEffect(() => {
+    // After user logs in, get user object from successful login
+    if (!appContext.user) {
+      // do some user stuff
+      console.log(appContext.user);
+      console.log(location);
+      const pagePathname = location.pathname;
+      if (!pagePathname.includes("signup")) {
+        appContext.setRedirect("/login");
+      }
+    }
+    console.log(appContext.redirect);
+  }, [appContext.user, location]);
+
+  useEffect(() => {
     // console.log("location", location.search.replace(/\?token=/g, ""));
     // console.log("window.location", window.location);
 
@@ -89,20 +103,25 @@ function Home() {
 
   return (
     <div className="app-wrapper">
-      Home
-      {appContext.user && <div>{appContext.user.email}</div>}
-      Other users
-      {allUsers &&
-        Object.values(allUsers).map((item) => {
-          console.log(item);
-          {
-            return item.email !== appContext.user.email ? (
-              <div>You</div>
-            ) : (
-              <Link to={`/user/` + item.authId}>{item.email}</Link>
-            );
-          }
-        })}
+      <h2>Home</h2>
+      <div className="current-user">
+        {appContext.user && <div>{appContext.user.email}</div>}
+      </div>
+      <h2>Other users</h2>
+      <div className="other-users">
+        {allUsers &&
+          appContext.user &&
+          Object.values(allUsers).map((item) => {
+            console.log(item);
+            {
+              return item.email === appContext.user.email ? (
+                <div>You</div>
+              ) : (
+                <Link to={`/user/` + item.authId}>{item.email}</Link>
+              );
+            }
+          })}
+      </div>
       {/* {appContext.showAlert !== "false" && (
         <Alert showAlert={appContext.showAlert} />
       )}
